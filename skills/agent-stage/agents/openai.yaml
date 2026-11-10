@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Stage"
+  short_description: "Visualize your agent through the events its harness exposes"
+  default_prompt: "Use $agent-stage to build a webpage that visualizes this harness's observable execution, verify the connection, and explain any missing capabilities."

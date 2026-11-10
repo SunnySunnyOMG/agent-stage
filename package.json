@@ -1,0 +1,14 @@
+{
+  "name": "agent-stage-skill",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A portable Agent Skill and a tiny event-driven visualization engine.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "demo": "node skills/agent-stage/scripts/serve.mjs --demo",
+    "export": "node skills/agent-stage/scripts/export.mjs"
+  },
+  "license": "MIT"
+}

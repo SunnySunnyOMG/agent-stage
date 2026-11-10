@@ -1,0 +1,18 @@
+{"v":1,"id":"d1","run":"demo","seq":1,"at":"2026-01-01T00:00:00Z","activity":"task","kind":"task","state":"working","label":"Build a research brief","origin":"demo"}
+{"v":1,"id":"d2","run":"demo","seq":2,"at":"2026-01-01T00:00:01Z","activity":"lead","parent":"task","kind":"agent","state":"working","label":"Coordinate the work","origin":"demo"}
+{"v":1,"id":"d3","run":"demo","seq":3,"at":"2026-01-01T00:00:02Z","activity":"researcher","parent":"lead","kind":"agent","state":"working","label":"Find independent sources","origin":"demo"}
+{"v":1,"id":"d4","run":"demo","seq":4,"at":"2026-01-01T00:00:03Z","activity":"builder","parent":"lead","kind":"agent","state":"working","label":"Draft the comparison","origin":"demo"}
+{"v":1,"id":"d5","run":"demo","seq":5,"at":"2026-01-01T00:00:04Z","activity":"search","parent":"researcher","kind":"tool","state":"working","label":"Read primary documentation","origin":"demo"}
+{"v":1,"id":"d6","run":"demo","seq":6,"at":"2026-01-01T00:00:05Z","activity":"search","parent":"researcher","kind":"tool","state":"failed","label":"A source could not be reached","origin":"demo"}
+{"v":1,"id":"d7","run":"demo","seq":7,"at":"2026-01-01T00:00:06Z","activity":"retry","parent":"researcher","kind":"tool","state":"working","label":"Try an independent source","origin":"demo"}
+{"v":1,"id":"d8","run":"demo","seq":8,"at":"2026-01-01T00:00:07Z","activity":"retry","parent":"researcher","kind":"tool","state":"done","label":"Source retrieved","origin":"demo"}
+{"v":1,"id":"d9","run":"demo","seq":9,"at":"2026-01-01T00:00:08Z","activity":"researcher","parent":"lead","kind":"agent","state":"done","label":"Sources collected","origin":"demo"}
+{"v":1,"id":"d10","run":"demo","seq":10,"at":"2026-01-01T00:00:09Z","activity":"builder","parent":"lead","kind":"agent","state":"done","label":"Draft produced","origin":"demo"}
+{"v":1,"id":"d11","run":"demo","seq":11,"at":"2026-01-01T00:00:10Z","activity":"check","parent":"lead","kind":"verification","state":"working","label":"Check claims against sources","origin":"demo"}
+{"v":1,"id":"d12","run":"demo","seq":12,"at":"2026-01-01T00:00:11Z","activity":"check","parent":"lead","kind":"verification","state":"needs-user","label":"A tradeoff needs your decision","origin":"demo"}
+{"v":1,"id":"d13","run":"demo","seq":13,"at":"2026-01-01T00:00:12Z","activity":"check","parent":"lead","kind":"verification","state":"done","label":"Evidence checked; decision recorded","origin":"demo"}
+{"v":1,"id":"d14","run":"demo","seq":14,"at":"2026-01-01T00:00:13Z","activity":"memory","parent":"lead","kind":"memory","state":"working","label":"Save the supported conclusion","origin":"demo"}
+{"v":1,"id":"d15","run":"demo","seq":15,"at":"2026-01-01T00:00:14Z","activity":"memory","parent":"lead","kind":"memory","state":"done","label":"Note saved with source references","origin":"demo"}
+{"v":1,"id":"d16","run":"demo","seq":16,"at":"2026-01-01T00:00:15Z","activity":"reuse","parent":"memory","kind":"reuse","state":"done","label":"Reusable condition and action recorded","origin":"demo"}
+{"v":1,"id":"d17","run":"demo","seq":17,"at":"2026-01-01T00:00:16Z","activity":"lead","parent":"task","kind":"agent","state":"done","label":"Handoff prepared","origin":"demo"}
+{"v":1,"id":"d18","run":"demo","seq":18,"at":"2026-01-01T00:00:17Z","activity":"task","kind":"task","state":"done","label":"Brief delivered in the demo","origin":"demo"}

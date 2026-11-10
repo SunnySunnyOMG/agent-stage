@@ -1,0 +1,6 @@
+node_modules/
+agent-stage-web/
+runs/
+private/
+*.log
+.DS_Store
