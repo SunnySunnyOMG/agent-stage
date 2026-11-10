@@ -4,6 +4,8 @@
 
 一个通用 Skill，让 Agent 在自己的 Harness 里搭建运行可视化网页。任务、工具调用、分工、等待与记忆操作，通过事件变成可以观察的动画。
 
+[Try the synthetic demo](https://sunnysunnyomg.github.io/agent-stage/?demo=1) · [Read the Skill](skills/agent-stage/SKILL.md)
+
 ![Agent Stage synthetic replay](docs/preview-desktop.png)
 
 The Skill discovers the available protocol, builds a thin adapter and reuses a small browser animation engine. Keep your own harness. Change the adapter when the event source changes.

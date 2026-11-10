@@ -31,3 +31,7 @@ A separate reviewer found two observation-state defects: late observation events
 - Whether an arbitrary host discovers the Skill automatically or has the tools/accounts needed for deployment.
 
 Static replay can be deployed independently. Remote live observation requires additional infrastructure described in the deployment reference.
+
+## Publication check
+
+The public `v0.1.0` Git tag was installed with skills CLI 1.7.4 into a fresh isolated project directory; discovery and copy succeeded. GitHub Actions package checks passed. The published Pages demo returned HTTP 200 and loaded its browser modules and synthetic replay. This is a public static demonstration, not a hosted live collector.
