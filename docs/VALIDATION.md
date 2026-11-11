@@ -35,3 +35,7 @@ Static replay can be deployed independently. Remote live observation requires ad
 ## Publication check
 
 The public `v0.1.0` Git tag was installed with skills CLI 1.7.4 into a fresh isolated project directory; discovery and copy succeeded. GitHub Actions package checks passed. The published Pages demo returned HTTP 200 and loaded its browser modules and synthetic replay. This is a public static demonstration, not a hosted live collector.
+
+## Ori integration in v0.2.0
+
+The office viewer was built from a local AIBox checkout on 2026-11-11. A synthetic event replay drove the original director through computer, library, computer, coffee corner, and sofa. The browser displayed the library and sofa states. Two automated checks cover the intent mapping and the conditions that distinguish confirmed idle from a tool ending or observation dropping out. The public repository ships the adapter and replay input. The Ori renderer and atlas come from the local AIBox checkout.

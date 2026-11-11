@@ -4,16 +4,16 @@
 
 一个通用 Skill，让 Agent 在自己的 Harness 里搭建运行可视化网页。任务、工具调用、分工、等待与记忆操作，通过事件变成可以观察的动画。
 
-[Try the synthetic demo](https://sunnysunnyomg.github.io/agent-stage/?demo=1) · [Read the Skill](skills/agent-stage/SKILL.md)
+**视频里的 Ori 办公室**使用本地 AIBox 的动画引擎。接入事件后，普通工作出现在电脑桌前，检索去图书馆，确认空闲后去泡咖啡和休息。[运行 Ori 办公室](#ori-office-with-a-local-aibox-checkout)
 
-![Agent Stage synthetic replay](docs/preview-desktop.png)
+[Public graph demo](https://sunnysunnyomg.github.io/agent-stage/?demo=1) · [Read the Skill](skills/agent-stage/SKILL.md)
 
 The Skill discovers the available protocol, builds a thin adapter and reuses a small browser animation engine. Keep your own harness. Change the adapter when the event source changes.
 
 ## Install the Skill
 
 ```sh
-npx --yes skills@1.7.4 add https://github.com/SunnySunnyOMG/agent-stage/tree/v0.1.0 --skill agent-stage --copy
+npx --yes skills@1.7.4 add https://github.com/SunnySunnyOMG/agent-stage/tree/v0.2.0 --skill agent-stage --copy
 ```
 
 The optional installer requires Node.js 22.20.0+ and npm. Select your host and installation scope; review the printed destinations. Or copy the complete `skills/agent-stage/` folder into your host's documented Skills directory. Discovery and invocation depend on the host; installing a directory does not establish a live connection.
@@ -28,14 +28,26 @@ Use your host's invocation syntax, for example `$agent-stage` in Codex. No provi
 
 ### Ori office with a local AIBox checkout
 
-Use the existing AIBox checkout and its installed `esbuild` to build a local viewer with Ori's Canvas stage, director, and sprite atlas:
+Clone Agent Stage and run these commands from the repository root. The export uses the supplied AIBox checkout and its installed `esbuild` to build Ori's Canvas stage, director, and sprite atlas locally.
 
 ```sh
 node skills/agent-stage/scripts/export.mjs --ori-source /path/to/aibox --out ./agent-stage-web
 node skills/agent-stage/scripts/serve.mjs --web ./agent-stage-web --demo
 ```
 
-The office replay moves Ori to the computer, to the library for research, back to the computer, and then to coffee and the sofa once the task ends. Use `--events ./normalized-events.jsonl` in place of `--demo` for a local event source. The generated directory includes the supplied AIBox code and assets. Check their redistribution rights before sharing that directory or hosting it publicly.
+Open the printed URL to play the office replay. For a live local source, replace `--demo` with `--events ./normalized-events.jsonl`.
+
+| Event or state | Ori's action |
+| --- | --- |
+| Working with `intent: "research"` | Walks to the library and reads. |
+| General work, including observable model activity | Works at the computer. |
+| Memory operation | Uses the library's filing motion. |
+| Needs the user | Goes to the handoff desk. |
+| Root task has ended and the source confirms there is no active work | Makes coffee and rests on the sofa. |
+
+For example, a source can mark a search operation as `"kind":"tool","state":"working","intent":"research"`. The [event contract](skills/agent-stage/references/events.md) shows the full record. The generated Ori directory includes code and assets from the supplied AIBox checkout. Public redistribution of that directory depends on their license.
+
+### Standalone graph demo
 
 Clone or download this repository. The included helper needs **Node.js 20+**, with no dependency installation:
 
@@ -44,6 +56,8 @@ npm run demo
 ```
 
 Open the printed URL. The demo is a **synthetic replay**, covering delegation, a failed tool and retry, a human decision, verification, memory and reuse. It is not a live agent connection.
+
+![Agent Stage graph replay](docs/preview-desktop.png)
 
 For a source adapted to the [normalized JSONL contract](skills/agent-stage/references/events.md):
 
@@ -84,12 +98,12 @@ Only explicit parent relationships create links. Concurrent tool calls do not in
 
 The browser template can be restyled or replaced while keeping the same event contract. Animation is a view; it never schedules or approves agent work.
 
-## What v0.1.0 establishes
+## Release scope
 
 This is a **Skill-first starter with a minimal working engine**, not a full monitoring product or a collection of certified native adapters. The Skill guides your agent to create an adapter for the protocol its current harness provides.
 
-- Bundled: Skill, integration/deployment references, normalized contract, browser engine, synthetic replay, loopback JSONL server and static export.
-- Checked: reducer and transport behavior, browser replay, responsive layout and an independent custom-harness fixture integration. See [validation](docs/VALIDATION.md).
+- Bundled: Skill, integration/deployment references, normalized contract, browser engine, synthetic replay, loopback JSONL server, static export and the optional Ori adapter.
+- Checked: reducer and transport behavior, browser replay, responsive layout, a custom-harness fixture integration, and the local Ori export. See [validation](docs/VALIDATION.md).
 - Not established: universal host compatibility, production throughput, native desktop subscriptions or a hosted multi-user collector.
 
 The collector exposes only short display fields and binds to loopback. Adapter authors must redact labels and review any data they choose to publish. Raw prompts, arguments, conversation text and credentials are outside the display contract.
