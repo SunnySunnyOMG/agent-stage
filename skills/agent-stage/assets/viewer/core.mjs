@@ -12,7 +12,11 @@ export function validateEvent(raw) {
   if (raw.kind === 'observation') return availability.includes(raw.availability) ? { ...base, availability: raw.availability } : null;
   if (!KINDS.includes(raw.kind) || !identifier(raw.activity) || !STATES.includes(raw.state) || typeof raw.label !== 'string' ||
       !raw.label.trim() || raw.label.length > 160 || (raw.parent !== undefined && (!identifier(raw.parent) || raw.parent === raw.activity))) return null;
-  return { ...base, activity: raw.activity, state: raw.state, label: raw.label, ...(raw.parent === undefined ? {} : { parent: raw.parent }) };
+  return {
+    ...base, activity: raw.activity, state: raw.state, label: raw.label,
+    ...(raw.parent === undefined ? {} : { parent: raw.parent }),
+    ...(['research', 'computer'].includes(raw.intent) ? { intent: raw.intent } : {}),
+  };
 }
 
 export function createStore({ maxEvents = 20000, maxActivities = 2000 } = {}) {

@@ -8,6 +8,8 @@ import { createStore, readJSONL } from '../assets/viewer/core.mjs';
 
 const assets = fileURLToPath(new URL('../assets/viewer/', import.meta.url));
 const files = { '/': ['index.html', 'text/html'], '/index.html': ['index.html', 'text/html'], '/style.css': ['style.css', 'text/css'], '/app.mjs': ['app.mjs', 'text/javascript'], '/core.mjs': ['core.mjs', 'text/javascript'], '/stage.mjs': ['stage.mjs', 'text/javascript'], '/demo.jsonl': ['demo.jsonl', 'application/x-ndjson'] };
+for (const file of ['office.mjs', 'office-state.mjs', 'ori-engine.mjs']) files[`/${file}`] = [file, 'text/javascript'];
+files['/office.css'] = ['office.css', 'text/css'];
 
 export async function startServer({ events, demo = false, port = 4317, webRoot = assets } = {}) {
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error('Port must be an integer from 0 to 65535.');

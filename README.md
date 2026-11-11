@@ -26,6 +26,17 @@ Use your host's invocation syntax, for example `$agent-stage` in Codex. No provi
 
 ## Try the engine
 
+### Ori office with a local AIBox checkout
+
+Use the existing AIBox checkout and its installed `esbuild` to build a local viewer with Ori's Canvas stage, director, and sprite atlas:
+
+```sh
+node skills/agent-stage/scripts/export.mjs --ori-source /path/to/aibox --out ./agent-stage-web
+node skills/agent-stage/scripts/serve.mjs --web ./agent-stage-web --demo
+```
+
+The office replay moves Ori to the computer, to the library for research, back to the computer, and then to coffee and the sofa once the task ends. Use `--events ./normalized-events.jsonl` in place of `--demo` for a local event source. The generated directory includes the supplied AIBox code and assets. Check their redistribution rights before sharing that directory or hosting it publicly.
+
 Clone or download this repository. The included helper needs **Node.js 20+**, with no dependency installation:
 
 ```sh

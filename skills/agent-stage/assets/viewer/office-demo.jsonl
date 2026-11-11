@@ -1,0 +1,4 @@
+{"v":1,"id":"office-1","run":"office-demo","seq":1,"at":"2026-01-01T00:00:00Z","activity":"brief","kind":"task","state":"working","label":"Plan the research brief","origin":"demo"}
+{"v":1,"id":"office-2","run":"office-demo","seq":2,"at":"2026-01-01T00:00:09Z","activity":"brief","kind":"task","state":"working","intent":"research","label":"Look up primary sources","origin":"demo"}
+{"v":1,"id":"office-3","run":"office-demo","seq":3,"at":"2026-01-01T00:00:22Z","activity":"brief","kind":"task","state":"working","label":"Write the comparison","origin":"demo"}
+{"v":1,"id":"office-4","run":"office-demo","seq":4,"at":"2026-01-01T00:00:32Z","activity":"brief","kind":"task","state":"done","label":"Research brief delivered","origin":"demo"}

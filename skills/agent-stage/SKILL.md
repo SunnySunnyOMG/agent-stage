@@ -19,6 +19,8 @@ description: Use when a user wants a webpage that visualizes their current agent
 
 复用 `assets/viewer/`：`core.mjs` 维护事实状态，`stage.mjs` 的 director 选择关注对象，renderer 绘图。样式可按用户偏好调整；新视觉主题仍消费同一份状态。展示层不得启动、排队或批准业务动作。
 
+使用者指定 Ori 且提供 AIBox checkout 时，用 `scripts/export.mjs --ori-source <checkout> --out <new-directory>` 生成办公室网页，再给 `scripts/serve.mjs` 加 `--web <new-directory>`。查询类写 `intent: research`，普通工作走电脑桌。空闲需要根任务的终态，详见事件约定。生成目录含 checkout 的运行时代码及贴图，公开分发前核对其许可。
+
 Node.js 20+ 可直接运行，无需安装依赖：
 
 ```sh

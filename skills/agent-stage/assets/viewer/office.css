@@ -1,0 +1,63 @@
+.office-caption { display: none; }
+
+[data-engine="ori"] {
+  background: #f6f2e9;
+  color: #302e28;
+  --muted: #655d52;
+  --line: #ded5c7;
+}
+
+[data-engine="ori"] header,
+[data-engine="ori"] main,
+[data-engine="ori"] footer { max-width: 1100px; }
+
+[data-engine="ori"] header { padding-block: 20px; }
+[data-engine="ori"] header p,
+[data-engine="ori"] .wordmark i,
+[data-engine="ori"] .caption,
+[data-engine="ori"] .center-caption,
+[data-engine="ori"] footer p { display: none; }
+
+[data-engine="ori"] .wordmark,
+[data-engine="ori"] .wordmark span { color: #302e28; }
+[data-engine="ori"] .badge { margin-left: auto; }
+[data-engine="ori"] .badge.demo { background: #ebe1d0; color: #604c2d; border-color: #d0c0a7; }
+[data-engine="ori"] .badge.connected { color: #285e48; border-color: #739486; }
+
+[data-engine="ori"] main {
+  grid-template-columns: minmax(0, min(540px, max(340px, calc((100svh - 232px) * .85714286)))) minmax(240px, 1fr);
+  align-items: start;
+  padding-top: 28px;
+}
+
+[data-engine="ori"] h1 { font-size: clamp(25px, 4vw, 34px); letter-spacing: -.8px; }
+[data-engine="ori"] .stage-heading { align-items: flex-start; flex-direction: column; gap: 13px; margin-bottom: 16px; }
+[data-engine="ori"] .controls { justify-content: flex-start; }
+[data-engine="ori"] button,
+[data-engine="ori"] select,
+[data-engine="ori"] .upload { color: #302e28; border-color: #cbbca8; background: #fffcf4; }
+[data-engine="ori"] :is(button, select, a):focus-visible,
+[data-engine="ori"] .upload:focus-within { outline-color: #9d542e; }
+
+[data-engine="ori"] .canvas-wrap {
+  height: auto;
+  aspect-ratio: 480 / 560;
+  background: #e9dfcf;
+  border: 1px solid #d6c7b2;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+[data-engine="ori"] canvas { image-rendering: pixelated; }
+[data-engine="ori"] .office-caption { display: block; font-size: 14px; margin-block: 12px; color: #5d472f; }
+[data-engine="ori"] .stage-foot { padding-top: 11px; }
+[data-engine="ori"] aside { max-height: 760px; overflow: auto; }
+[data-engine="ori"] .activity { background: transparent; border-color: var(--line); }
+[data-engine="ori"] .activity:hover { background: #eee4d5; }
+[data-engine="ori"] .activity-meta[data-state="working"] .state-dot { background: #4c795c; }
+[data-engine="ori"] .detail strong { color: inherit; }
+
+@media (max-width: 760px) {
+  [data-engine="ori"] main { display: block; }
+  [data-engine="ori"] aside { max-height: none; overflow: visible; }
+}
