@@ -11,13 +11,32 @@ function describeFocus(focus) {
 }
 const params = new URLSearchParams(location.search);
 const useOffice = params.get('view') !== 'graph';
+const usePixel = useOffice && params.get('view') !== 'studio';
 document.documentElement.dataset.engine = useOffice ? 'office' : 'graph';
-const stage = useOffice ? mountOffice($('stage')) : mountStage($('stage'), describeFocus);
-const alternate = new URLSearchParams(params);
-if (useOffice) alternate.set('view', 'graph');
-else alternate.delete('view');
-$('view').href = alternate.size ? `?${alternate}` : './';
-$('view').textContent = useOffice ? 'Event graph' : 'Animated studio';
+document.documentElement.dataset.scene = usePixel ? 'pixel' : '';
+function updateViewLinks() {
+  const alternate = new URLSearchParams(location.search);
+  if (useOffice) alternate.set('view', 'graph');
+  else alternate.delete('view');
+  $('view').href = alternate.size ? `?${alternate}` : './';
+  $('view').textContent = useOffice ? 'Event graph' : 'Pixel rooms';
+  if (useOffice) {
+    const scene = new URLSearchParams(location.search);
+    if (usePixel) scene.set('view', 'studio');
+    else scene.delete('view');
+    $('scene-view').href = scene.size ? `?${scene}` : './';
+    $('scene-view').textContent = usePixel ? 'Studio' : 'Pixel rooms';
+    $('scene-view').hidden = false;
+  }
+}
+updateViewLinks();
+let stage;
+if (usePixel) {
+  const { mountPixelOffice } = await import('./pixel-office.mjs');
+  stage = mountPixelOffice($('stage'), params, updateViewLinks);
+} else {
+  stage = useOffice ? mountOffice($('stage')) : mountStage($('stage'), describeFocus);
+}
 
 function show(snapshot) {
   lastSnapshot = snapshot;

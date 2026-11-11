@@ -17,9 +17,9 @@ description: Use when a user wants an animated webpage that visualizes their cur
 
 ## 搭建网页
 
-复用 `assets/viewer/`。默认网页是正交投影的工作室，角色在有对应观测事件时走到各工位并做出动作。选择 **Event graph** 可以查看同一事件约定下的关系图。两种视图都消费 `core.mjs` 的状态。展示层不得启动、排队或批准业务动作。
+复用 `assets/viewer/`。默认视图提供八套像素房间、四个通用角色和自定义角色导入。用户想设计角色时，可用 [Agent Stage Character Skill](https://github.com/SunnySunnyOMG/agent-stage/tree/main/skills/agent-stage-character)。选择 **Studio** 查看十二个独立工位，或用 **Event graph** 查看已报告的关系。三个视图消费同一事件状态。展示层不得启动、排队或批准业务动作。
 
-按[家具映射表](references/events.md#furniture-mapping)给源事件标注意向。新增或更新待办去 To-do 看板，浏览网页去浏览终端，本地资料查询去阅读桌，普通工作回电脑。明确的记忆、验证或待用户事件分别去书架、核验桌和交接台。只有根任务已结束、观测完整且没有活跃工作时，角色才去喝咖啡和休息。视图、素材和回放都随包提供。
+按[家具映射表](references/events.md#furniture-mapping)给源事件标注意向。新增或更新待办去 To-do 看板，浏览网页去浏览终端，本地资料查询去阅读桌，普通工作回电脑。明确的记忆、验证或待用户事件分别去书架、核验桌和交接台。像素房间会复用已有家具，例如查网页与代码操作共用屏幕工位。只有根任务已结束、观测完整且没有活跃工作时，角色才去喝咖啡和休息。视图、素材和回放都随包提供。
 
 Node.js 20+ 可直接运行，无需安装依赖：
 

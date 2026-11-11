@@ -41,3 +41,7 @@ The public `v0.1.0` Git tag was installed with skills CLI 1.7.4 into a fresh iso
 The default viewer renders an orthographic room from procedural geometry. Automated checks cover the station mapping, incomplete observation, a completed-only to-do update, duplicate snapshots, and static export of the studio and both demo inputs. The graph remains available with `?view=graph`. The studio demo uses synthetic events.
 
 A Chrome run loaded the static export, visited all 12 stations in the synthetic replay, and switched to the graph. At 390 px the room fit the viewport with no horizontal overflow.
+
+## Pixel rooms and character import
+
+The v0.4.0 static export rendered all eight pixel rooms and all four built-in looks in Chrome. Santorini loaded its four environment textures. The example character from the character Skill imported and replayed planning, walking, reading, coffee and rest. Reload and clear were verified, along with the studio and graph links and a 390 px viewport. The checked-in bundle is reproducible from the pinned source and the tests assert its exact room, character, and turn-pose inventory.

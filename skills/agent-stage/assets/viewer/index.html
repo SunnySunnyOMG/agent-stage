@@ -5,7 +5,15 @@
   <header><a class="wordmark" href="./">agent<span>stage</span><i></i></a><p>Your agent, in motion.</p><span id="connection" class="badge">No source connected</span></header>
   <main>
     <section class="stage-panel" aria-label="Agent execution visualization">
-      <div class="stage-heading"><div><p class="caption">A window into the work</p><h1>See your agent at work.</h1></div><div class="controls"><button id="demo">Play demo</button><button id="pause" disabled>Pause</button><select id="speed" aria-label="Replay speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select><label class="upload">Import JSONL<input id="import" type="file" accept=".jsonl,.json,.ndjson"></label><a id="view" class="view-link" href="?demo=1&amp;view=graph">Event graph</a></div></div>
+      <div class="stage-heading"><div><p class="caption">A window into the work</p><h1>See your agent at work.</h1></div><div class="controls"><button id="demo">Play demo</button><button id="pause" disabled>Pause</button><select id="speed" aria-label="Replay speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select><label class="upload">Import JSONL<input id="import" type="file" accept=".jsonl,.json,.ndjson"></label><a id="view" class="view-link" href="?demo=1&amp;view=graph">Event graph</a><a id="scene-view" class="view-link" hidden>Studio</a></div></div>
+      <div id="pixel-controls" class="pixel-controls" hidden>
+        <label>Room <select id="pixel-room"></select></label>
+        <label>Character <select id="pixel-character"></select></label>
+        <label class="upload">Import character<input id="character-file" type="file" accept=".json,application/json"></label>
+        <button id="remove-character" type="button" hidden>Clear custom character</button>
+        <a class="view-link" href="https://github.com/SunnySunnyOMG/agent-stage/tree/main/skills/agent-stage-character" target="_blank" rel="noreferrer">Design your own</a>
+        <span id="character-feedback" role="status"></span>
+      </div>
       <div class="canvas-wrap"><canvas id="stage" aria-label="Agent activity visualization"></canvas><div class="center-caption"><span id="focus-kind">Ready when you are</span><h2 id="focus-label">A stage for<br>real activity.</h2><p id="focus-state">Connect events or play the marked demo.</p></div></div>
       <div class="office-caption"><span id="office-location" role="status">Awaiting activity data</span></div>
       <div class="stage-foot"><span id="mode">Empty · no activity inferred</span><span id="progress">No events</span></div>

@@ -63,3 +63,19 @@
 }
 
 .view-link { align-self: center; color: var(--muted); padding: 5px; }
+
+.pixel-controls:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+.pixel-controls select { margin-inline-start: 3px; padding: 7px; }
+#character-feedback { color: #5d472f; }
+#character-feedback:empty { display: none; }
+[data-scene="pixel"] .canvas-wrap {
+  width: min(100%, 490px);
+  aspect-ratio: 480 / 560;
+}

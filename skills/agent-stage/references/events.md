@@ -37,6 +37,8 @@ See `assets/viewer/demo.jsonl` for an explicitly synthetic scenario with indepen
 
 ## Furniture mapping
 
+The **Studio** has all 12 dedicated stations. Pixel rooms use the same events and share their existing furniture for some actions. Web browsing and code share the screen workstation. Research, memory and verification use the library. The activity caption keeps the event and intent visible in both views.
+
 | Station | What the adapter can report | Animation |
 | --- | --- | --- |
 | To-do board | `intent: "planning"` for an explicit plan or to-do create/update event | Adds a note to the board |

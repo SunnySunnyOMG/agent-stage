@@ -2,19 +2,31 @@
 
 **See what your agent is doing.** Agent Stage is an open-source tool and Skill that turns runtime events into an animated room. Watch your agent add a to-do, open the web, consult project notes, hand off a decision or file a memory.
 
-Agent Stage 是独立的开源工具和 Skill。它把 Agent 已暴露的运行事件变成一个正交投影房间里的动作，能实时查看，也能回放。
+Agent Stage 把 Agent 的运行事件变成像素房间里的动作。你可以换 8 套房间、选 4 个通用角色，也可以让 Agent 帮你画一个自己的角色。
 
-[Play the animated demo](https://sunnysunnyomg.github.io/agent-stage/?demo=1) · [Open the event graph](https://sunnysunnyomg.github.io/agent-stage/?demo=1&view=graph) · [Read the Skill](skills/agent-stage/SKILL.md)
+[Play the animated demo](https://sunnysunnyomg.github.io/agent-stage/?demo=1) · [Open the event graph](https://sunnysunnyomg.github.io/agent-stage/?demo=1&view=graph) · [Design your own character](skills/agent-stage-character/SKILL.md)
 
 The Skill discovers your harness’s available events, creates a small adapter and launches the bundled viewer. The room, event graph, demo and static export run with no external assets, vendor SDK or model API.
 
-## Install the Skill
+![A custom character at the to-do board in the Marrakech pixel room](docs/preview-pixel.png)
+
+## Make a character of your own
+
+The **Agent Stage Character** Skill turns a description into a pixel character with poses for walking, working, reading and sleeping. Try an amber robot, a mushroom courier or a tiny astronaut. The same character works in all eight rooms.
+
+1. Install `agent-stage-character` using the command below.
+2. Ask your agent: “Use `$agent-stage-character` to make a small amber robot with a green jacket.”
+3. Open the [viewer](https://sunnysunnyomg.github.io/agent-stage/?demo=1), select **Import character**, choose the resulting JSON, and play the demo. You can [download the example character](skills/agent-stage-character/assets/starter-character.json) to try the flow.
+
+The character file stays in the current browser. Share the JSON to let someone else use it.
+
+## Install the Skills
 
 ```sh
-npx --yes skills@1.7.4 add https://github.com/SunnySunnyOMG/agent-stage/tree/v0.3.0 --skill agent-stage --copy
+npx --yes skills@1.7.4 add https://github.com/SunnySunnyOMG/agent-stage/tree/v0.4.0 --skill agent-stage agent-stage-character --copy
 ```
 
-The optional installer requires Node.js 22.20.0+ and npm. Select your host and installation scope; review the printed destinations. Or copy the complete `skills/agent-stage/` folder into your host's documented Skills directory. Discovery and invocation depend on the host; installing a directory does not establish a live connection.
+The optional installer requires Node.js 22.20.0+ and npm. Select your host and installation scope; review the printed destinations. Or copy the Skill folder you want into your host’s documented Skills directory. Discovery and invocation depend on the host; installing a directory does not establish a live connection.
 
 Then ask your agent:
 
@@ -30,11 +42,9 @@ Clone or download this repository. **Node.js 20+** runs the bundled viewer with 
 npm run demo
 ```
 
-Open the printed URL. The default studio shows the synthetic replay moving between 12 stations. Select **Event graph** for a second synthetic scenario showing delegation, tool retry and explicit parent relationships.
+Open the printed URL. Choose a room and a character in the pixel viewer. **Studio** opens the procedural scene with 12 dedicated stations, and **Event graph** opens the relationship view. All bundled demos use synthetic events.
 
 [See the complete furniture mapping](skills/agent-stage/references/events.md#furniture-mapping).
-
-![Agent Stage studio during a to-do update](docs/preview-studio.png)
 
 For a source adapted to the [normalized JSONL contract](skills/agent-stage/references/events.md):
 
@@ -61,7 +71,7 @@ Harness / hooks / callbacks / logs
                  │
           observed state
                  │
-      director → studio or event graph
+      director → pixel rooms, studio or graph
                  │
          webpage / replay
 ```
@@ -69,7 +79,7 @@ Harness / hooks / callbacks / logs
 - **Source:** documented events determine which capabilities exist.
 - **State:** deduplicate events, respect ordering and keep runs separate.
 - **Director:** choose what to focus on and how motion connects.
-- **Renderer:** draw the orthographic room and activity cues, or show recorded relationships in the graph.
+- **Renderer:** show the same activity stream in pixel rooms, the studio, or the event graph.
 
 Only explicit parent relationships create links. Concurrent tool calls do not invent subagents. A successful tool does not prove task acceptance or memory persistence. Disconnects preserve the last observed state and show incomplete observation. `observed`, `reported` and `demo` remain distinguishable.
 
@@ -79,7 +89,7 @@ The browser template can be restyled or replaced while keeping the same event co
 
 This release includes a self-contained browser engine and a Skill for creating an adapter from the events your harness provides.
 
-- Bundled: Skill, event contract, animated studio, event graph, synthetic replays, loopback JSONL server and static export.
+- Bundled: viewer and character Skills, eight pixel rooms, four generic characters, studio, graph, synthetic replays, loopback JSONL server and static export.
 - Checked: event reduction, transport, station routing, confirmed idle, and static export. See [validation](docs/VALIDATION.md).
 - Not established: universal host compatibility, production throughput, native desktop subscriptions or a hosted multi-user collector.
 
@@ -91,6 +101,6 @@ The collector exposes only short display fields and binds to loopback. Adapter a
 npm test
 ```
 
-Read [the Skill](skills/agent-stage/SKILL.md), [design](docs/DESIGN.md) and [event contract](skills/agent-stage/references/events.md). Contributions are most useful as small real harness examples with a field mapping, supported/missing capabilities and observable verification.
+Read [the viewer Skill](skills/agent-stage/SKILL.md), [the character Skill](skills/agent-stage-character/SKILL.md), [pixel renderer provenance](docs/PIXEL-RENDERER.md), and [the event contract](skills/agent-stage/references/events.md). Contributions are most useful as small real harness examples with a field mapping, supported/missing capabilities and observable verification.
 
 MIT licensed. No account, model call or vendor service is needed to run the included demo.
