@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createStore } from '../skills/agent-stage/assets/viewer/core.mjs';
+import { stations } from '../skills/agent-stage/assets/viewer/office-art.mjs';
 import { officeSnapshot } from '../skills/agent-stage/assets/viewer/office-state.mjs';
 
 function event(fields) {
@@ -10,23 +11,45 @@ function event(fields) {
 function render(events, source) {
   const store = createStore();
   for (const row of events) assert.equal(store.accept(event(row)), true);
-  return officeSnapshot({ ...store.snapshot(), source }, { generation: 'test', revision: 1, started: new Map() });
+  return officeSnapshot({ ...store.snapshot(), source });
 }
 
-test('explicit research reaches the library projection while ordinary work and model steps stay at the computer', () => {
-  const state = render([
-    { intent: 'research', label: 'Find a source' },
-    { id: 'event-2', seq: 2, activity: 'child', kind: 'tool', parent: 'root', label: 'Look up words in a label' },
-    { id: 'event-3', seq: 3, activity: 'model', kind: 'agent', parent: 'root', intent: 'computer' },
-  ]);
-  assert.deepEqual(state.activities.map(activity => activity.kind), ['research', 'code', 'code']);
+test('every workstation maps to an explicit intent or activity state', () => {
+  const scenarios = {
+    board: { intent: 'planning' },
+    library: { intent: 'research' },
+    shelf: { kind: 'memory' },
+    browser: { intent: 'web' },
+    meeting: { intent: 'delegation' },
+    desk: { label: 'Maybe search online' },
+    terminal: { intent: 'code' },
+    phone: { intent: 'communication' },
+    handoff: { state: 'needs-user', intent: 'web' },
+    review: { kind: 'verification' },
+    coffee: { state: 'done' },
+  };
+  for (const [station, fields] of Object.entries(scenarios)) assert.equal(render([fields]).station, station);
+  assert.equal(render([{ kind: 'reuse' }]).station, 'shelf');
+  assert.equal(render([{ intent: 'computer' }]).station, 'desk');
+  assert.deepEqual(Object.keys(stations).sort(), [...Object.keys(scenarios), 'sofa'].sort());
 });
 
-test('an office only receives an idle snapshot when root work is known to have ended', () => {
-  const toolEnded = { kind: 'tool', state: 'done' };
-  assert.equal(render([toolEnded]).availability, 'partial');
+test('idle requires ended root work and complete observation', () => {
+  assert.equal(render([{ kind: 'tool', state: 'done' }]).station, null);
   assert.equal(render([{ state: 'waiting' }]).availability, 'partial');
   assert.equal(render([{ state: 'done' }]).availability, 'ready');
   assert.equal(render([{ state: 'done' }], { available: false }).availability, 'unavailable');
-  assert.deepEqual(render([{}], { available: false }).activities, []);
+  assert.equal(render([{}], { available: false }).focus, null);
+});
+
+test('a newly observed completed to-do update gets a cue once, without replaying on reconnect', () => {
+  const store = createStore();
+  store.accept(event({}));
+  const before = store.snapshot();
+  store.accept(event({ id: 'plan', activity: 'todo', parent: 'root', seq: 2, kind: 'tool', state: 'done', intent: 'planning' }));
+  const after = store.snapshot();
+  assert.equal(officeSnapshot(after, before).newlyDone.intent, 'planning');
+  assert.equal(officeSnapshot(after, after).newlyDone, null);
+  assert.equal(officeSnapshot(after, { ...before, source: { available: false } }).newlyDone, null);
+  assert.equal(officeSnapshot(after).newlyDone, null);
 });

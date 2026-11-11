@@ -31,6 +31,8 @@ test('static export is self-contained and never overwrites an existing output', 
   try {
     await exportViewer(out);
     assert.match(await readFile(join(out, 'index.html'), 'utf8'), /Agent Stage/);
+    assert.match(await readFile(join(out, 'office-art.mjs'), 'utf8'), /orthographic camera/);
+    assert.match(await readFile(join(out, 'office-demo.jsonl'), 'utf8'), /"intent":"web"/);
     assert.match(await readFile(join(out, 'demo.jsonl'), 'utf8'), /"origin":"demo"/);
     await assert.rejects(exportViewer(out), { code: 'EEXIST' });
   } finally { await rm(dir, { recursive: true }); }

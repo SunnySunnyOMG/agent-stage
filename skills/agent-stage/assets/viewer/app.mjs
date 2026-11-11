@@ -1,5 +1,6 @@
 import { createStore, readJSONL } from './core.mjs';
 import { mountStage } from './stage.mjs';
+import { mountOffice } from './office.mjs';
 
 const $ = id => document.getElementById(id);
 let store = createStore(), stream, replay = null, timer, mode = 'Empty', selected, lastSnapshot;
@@ -8,19 +9,15 @@ function describeFocus(focus) {
   $('focus-label').textContent = focus?.label ?? 'A stage for real activity.';
   $('focus-state').textContent = focus ? `${focus.state} · ${focus.run}` : 'Connect events or play the marked demo.';
 }
-const useOffice = document.documentElement.dataset.engine === 'ori';
-let stage;
-if (useOffice) {
-  document.querySelector('h1').textContent = 'Ori’s office';
-  try {
-    const { mountOffice } = await import('./office.mjs');
-    stage = mountOffice($('stage'), describeFocus, () => { $('office-location').textContent = 'The office animation could not load'; });
-  } catch {
-    $('office-location').textContent = 'The office animation could not load';
-  }
-} else {
-  stage = mountStage($('stage'), describeFocus);
-}
+const params = new URLSearchParams(location.search);
+const useOffice = params.get('view') !== 'graph';
+document.documentElement.dataset.engine = useOffice ? 'office' : 'graph';
+const stage = useOffice ? mountOffice($('stage')) : mountStage($('stage'), describeFocus);
+const alternate = new URLSearchParams(params);
+if (useOffice) alternate.set('view', 'graph');
+else alternate.delete('view');
+$('view').href = alternate.size ? `?${alternate}` : './';
+$('view').textContent = useOffice ? 'Event graph' : 'Animated studio';
 
 function show(snapshot) {
   lastSnapshot = snapshot;
@@ -39,7 +36,7 @@ function show(snapshot) {
     const dot = document.createElement('i'); dot.className = 'state-dot';
     meta.append(dot, document.createTextNode(`${a.kind} · ${a.state} · ${a.origin}`)); button.append(title, meta);
     button.onclick = () => {
-      selected = JSON.stringify([a.run, a.activity]); stage?.select(selected);
+      selected = JSON.stringify([a.run, a.activity]); stage?.select?.(selected);
       $('detail').hidden = false;
       $('detail').textContent = `Run: ${a.run}\nActivity: ${a.activity}\nParent: ${a.parent ?? 'not reported'}\nObserved: ${a.at}\nSource: ${a.origin}`;
       $('detail').style.whiteSpace = 'pre-line';
@@ -51,7 +48,7 @@ function show(snapshot) {
 function stop() { clearTimeout(timer); stream?.close(); stream = null; replay = null; stage?.setPaused?.(false); $('pause').disabled = true; $('pause').textContent = 'Pause'; }
 function badge(text, cls = '') { $('connection').textContent = text; $('connection').className = `badge ${cls}`; }
 function startReplay(events, label) {
-  stop(); store = createStore(); selected = null; stage?.reset?.(); stage?.select(null); $('detail').hidden = true;
+  stop(); store = createStore(); selected = null; stage?.reset?.(); stage?.select?.(null); $('detail').hidden = true;
   mode = label; badge(label, events.every(e => e.origin === 'demo') ? 'demo' : '');
   const ordered = [...events].sort((a, b) => Date.parse(a.at) - Date.parse(b.at) || a.seq - b.seq);
   if (!ordered.length) { show(store.snapshot()); $('progress').textContent = 'No valid events'; return; }
@@ -73,7 +70,7 @@ function tick() {
   else { $('pause').disabled = true; replay = null; }
 }
 $('demo').onclick = async () => {
-  try { const response = await fetch('demo.jsonl'); if (!response.ok) throw new Error('Demo file unavailable'); const result = readJSONL(await response.text()); startReplay(result.events, 'Demo · synthetic replay'); }
+  try { const response = await fetch(useOffice ? 'office-demo.jsonl' : 'demo.jsonl'); if (!response.ok) throw new Error('Demo file unavailable'); const result = readJSONL(await response.text()); startReplay(result.events, 'Demo · synthetic replay'); }
   catch (error) { badge('Demo could not load'); $('notice').textContent = error.message; }
 };
 $('pause').onclick = () => { if (replay) { replay.paused = !replay.paused; stage?.setPaused?.(replay.paused); $('pause').textContent = replay.paused ? 'Resume' : 'Pause'; } };
@@ -83,8 +80,7 @@ $('import').onchange = async e => {
   const result = readJSONL(await file.text()); startReplay(result.events, `Imported replay${result.invalid ? ` · ${result.invalid} invalid rows skipped` : ''}`);
 };
 show(store.snapshot());
-const params = new URLSearchParams(location.search);
-if (params.has('demo')) $('demo').click();
+if (params.has('demo') && !params.has('live')) $('demo').click();
 if (params.has('live')) {
   stop(); mode = 'Live · normalized JSONL'; badge('Connecting');
   stream = new EventSource('events');

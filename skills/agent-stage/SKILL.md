@@ -1,6 +1,6 @@
 ---
 name: agent-stage
-description: Use when a user wants a webpage that visualizes their current agent's execution, tool activity, delegation, or observable memory actions, or wants to adapt or deploy an existing Agent Stage viewer for their harness.
+description: Use when a user wants an animated webpage that visualizes their current agent's execution, tool activity, delegation, or observable memory actions, or wants to adapt or deploy an existing Agent Stage viewer for their harness.
 ---
 
 # Agent Stage
@@ -17,9 +17,9 @@ description: Use when a user wants a webpage that visualizes their current agent
 
 ## 搭建网页
 
-复用 `assets/viewer/`：`core.mjs` 维护事实状态，`stage.mjs` 的 director 选择关注对象，renderer 绘图。样式可按用户偏好调整；新视觉主题仍消费同一份状态。展示层不得启动、排队或批准业务动作。
+复用 `assets/viewer/`。默认网页是正交投影的工作室，角色在有对应观测事件时走到各工位并做出动作。选择 **Event graph** 可以查看同一事件约定下的关系图。两种视图都消费 `core.mjs` 的状态。展示层不得启动、排队或批准业务动作。
 
-使用者指定 Ori 且提供 AIBox checkout 时，用 `scripts/export.mjs --ori-source <checkout> --out <new-directory>` 生成办公室网页，再给 `scripts/serve.mjs` 加 `--web <new-directory>`。查询类写 `intent: research`，普通工作走电脑桌。空闲需要根任务的终态，详见事件约定。生成目录含 checkout 的运行时代码及贴图，公开分发前核对其许可。
+按[家具映射表](references/events.md#furniture-mapping)给源事件标注意向。新增或更新待办去 To-do 看板，浏览网页去浏览终端，本地资料查询去阅读桌，普通工作回电脑。明确的记忆、验证或待用户事件分别去书架、核验桌和交接台。只有根任务已结束、观测完整且没有活跃工作时，角色才去喝咖啡和休息。视图、素材和回放都随包提供。
 
 Node.js 20+ 可直接运行，无需安装依赖：
 

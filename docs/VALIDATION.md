@@ -36,6 +36,8 @@ Static replay can be deployed independently. Remote live observation requires ad
 
 The public `v0.1.0` Git tag was installed with skills CLI 1.7.4 into a fresh isolated project directory; discovery and copy succeeded. GitHub Actions package checks passed. The published Pages demo returned HTTP 200 and loaded its browser modules and synthetic replay. This is a public static demonstration, not a hosted live collector.
 
-## Ori integration in v0.2.0
+## Self-contained studio
 
-The office viewer was built from a local AIBox checkout on 2026-11-11. A synthetic event replay drove the original director through computer, library, computer, coffee corner, and sofa. The browser displayed the library and sofa states. Two automated checks cover the intent mapping and the conditions that distinguish confirmed idle from a tool ending or observation dropping out. The public repository ships the adapter and replay input. The Ori renderer and atlas come from the local AIBox checkout.
+The default viewer renders an orthographic room from procedural geometry. Automated checks cover the station mapping, incomplete observation, a completed-only to-do update, duplicate snapshots, and static export of the studio and both demo inputs. The graph remains available with `?view=graph`. The studio demo uses synthetic events.
+
+A Chrome run loaded the static export, visited all 12 stations in the synthetic replay, and switched to the graph. At 390 px the room fit the viewport with no horizontal overflow.

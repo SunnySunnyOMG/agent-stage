@@ -1,43 +1,73 @@
-import { createDirector, mountOriOffice, officeAtlas } from './ori-engine.mjs';
-import { activityKey, officeKind, officeSnapshot } from './office-state.mjs';
+import { drawStudio, size, stations } from './office-art.mjs';
+import { officeSnapshot, officeStation } from './office-state.mjs';
 
-export function mountOffice(canvas, onFocus, onError) {
-  let listener, current, currentFrame, revision = 0, generation = 0;
-  let activities = new Map();
-  const started = new Map();
-  const stationCaption = document.getElementById('office-location');
-  const stationNames = { code: 'Computer', library: 'Library', coffee: 'Coffee corner', sofa: 'Sofa', handoff: 'Handoff desk' };
+export function mountOffice(canvas) {
+  canvas.width = size.width;
+  canvas.height = size.height;
+  const ctx = canvas.getContext('2d');
+  const caption = document.getElementById('office-location');
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  const home = { x: 159, y: 420 };
+  let position = { ...home }, previous, projection, cue, frame, paused = false;
+  let time = 0, lastFrame, coffeeSince, destination = null, displayed = '';
 
-  function describe(frame) {
-    currentFrame = frame;
-    const activity = activities.get(frame.focusActivityId);
-    stationCaption.textContent = stationNames[frame.station] ?? (frame.availability === 'ready' ? 'Office' : 'Awaiting activity data');
-    stationCaption.dataset.station = frame.station ?? '';
-    onFocus(activity);
+  function describe(station, activity) {
+    const status = station ? stations[station].label : projection?.availability === 'partial' ? 'Activity incomplete' : 'Awaiting activity data';
+    const label = activity ? `${status} · ${activity.label} · ${activity.state} · ${activity.origin}` : status;
+    if (label === displayed) return;
+    caption.textContent = label;
+    caption.dataset.station = station ?? '';
+    displayed = label;
   }
 
-  const stage = mountOriOffice(canvas, {
-    source: { watch(next) { listener = next; if (current) next(current); return () => { listener = undefined; }; } },
-    atlas: officeAtlas,
-    director: createDirector({ config: { maxStayMs: Infinity } }),
-    onFrame: describe,
-    onError,
-  });
+  function paint(now) {
+    const delta = paused || lastFrame === undefined ? 0 : Math.min(now - lastFrame, 50);
+    time += delta;
+    lastFrame = now;
+    if (cue?.arrivedAt !== undefined && time - cue.arrivedAt >= 1250) cue = null;
+    const activity = cue?.activity ?? projection?.focus;
+    let station = cue ? officeStation(cue.activity) : projection?.station;
+    if (station === 'coffee' && coffeeSince !== undefined && time - coffeeSince >= 2600) station = 'sofa';
+    destination = station ?? null;
+    const target = stations[destination];
+    let walking = false;
+    if (target) {
+      const dx = target.x - position.x, dy = target.y - position.y;
+      const distance = Math.hypot(dx, dy);
+      const step = delta * 0.35;
+      walking = !reducedMotion.matches && distance > Math.max(step, 0.5);
+      if (walking) {
+        position.x += dx * step / distance;
+        position.y += dy * step / distance;
+      } else {
+        position = { x: target.x, y: target.y };
+        if (cue && cue.arrivedAt === undefined) cue.arrivedAt = time;
+        if (destination === 'coffee' && coffeeSince === undefined) coffeeSince = time;
+      }
+    }
+    describe(destination, activity);
+    drawStudio(ctx, { ...position, station: destination, walking, time: reducedMotion.matches ? 0 : time, activity });
+    frame = requestAnimationFrame(paint);
+  }
+  frame = requestAnimationFrame(paint);
+
   return {
     accept(snapshot) {
-      activities = new Map(snapshot.activities.map(activity => [activityKey(activity), activity]));
-      current = officeSnapshot(snapshot, { generation: String(generation), revision: ++revision, started });
-      listener?.(current);
-      if (currentFrame) describe(currentFrame);
+      projection = officeSnapshot(snapshot, previous);
+      previous = snapshot;
+      const focus = projection.focus;
+      if (projection.availability === 'unavailable' || (focus && officeStation(focus) !== 'desk')) cue = null;
+      if (projection.newlyDone && (!focus || officeStation(focus) === 'desk')) {
+        cue = { activity: projection.newlyDone };
+      }
+      if (projection.station !== 'coffee') coffeeSince = undefined;
     },
-    reset() { generation++; started.clear(); stage.point(undefined); },
-    select(key) {
-      const activity = activities.get(key);
-      if (!activity) { stage.point(undefined); return; }
-      const kind = officeKind(activity);
-      stage.point(kind === 'research' || kind === 'memory' ? 'library' : 'code');
+    reset() {
+      previous = projection = cue = coffeeSince = undefined;
+      destination = null;
+      position = { ...home };
     },
-    setPaused(paused) { stage.setPaused(paused); },
-    dispose() { stage.dispose(); },
+    setPaused(value) { paused = value; },
+    dispose() { cancelAnimationFrame(frame); },
   };
 }

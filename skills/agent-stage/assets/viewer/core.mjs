@@ -1,5 +1,6 @@
 export const KINDS = ['task', 'agent', 'tool', 'verification', 'memory', 'reuse'];
 export const STATES = ['working', 'waiting', 'needs-user', 'done', 'failed', 'cancelled', 'unknown'];
+const intents = ['research', 'computer', 'web', 'planning', 'code', 'delegation', 'communication'];
 const origins = ['observed', 'reported', 'demo'];
 const availability = ['ready', 'partial', 'unavailable'];
 const identifier = value => typeof value === 'string' && /^[a-zA-Z0-9_.:@/-]{1,120}$/.test(value);
@@ -15,7 +16,7 @@ export function validateEvent(raw) {
   return {
     ...base, activity: raw.activity, state: raw.state, label: raw.label,
     ...(raw.parent === undefined ? {} : { parent: raw.parent }),
-    ...(['research', 'computer'].includes(raw.intent) ? { intent: raw.intent } : {}),
+    ...(intents.includes(raw.intent) ? { intent: raw.intent } : {}),
   };
 }
 

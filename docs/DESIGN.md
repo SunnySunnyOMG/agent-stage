@@ -8,7 +8,7 @@ A portable Agent Skill helps the user's current harness build a small webpage th
 
 `Harness → adapter → normalized events → display state → director → renderer`
 
-The adapter establishes facts and capabilities. A deterministic reducer maintains display state. A presentation director selects an activity and animation cue. The renderer draws an animated graph. The same normalized events drive live observation and replay. Animation never schedules agent work or establishes successful execution.
+The adapter establishes facts and capabilities. A deterministic reducer maintains display state. A presentation director selects an activity and animation cue. The default renderer draws a room with a fixed orthographic camera. A second renderer draws the event graph. Both consume the same normalized event contract. The same normalized events drive live observation and replay. Animation never schedules agent work or establishes successful execution.
 
 ## Contract
 
